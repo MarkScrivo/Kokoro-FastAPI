@@ -32,12 +32,10 @@ RUN useradd -m -u 1000 appuser
 # Create model directory
 RUN mkdir -p /app/Kokoro-82M
 
-# Download model files using huggingface-cli
+# Download model files using huggingface-hub
 ARG HF_TOKEN
-ENV HUGGING_FACE_HUB_TOKEN=$HF_TOKEN
-RUN if [ -n "$HF_TOKEN" ]; then \
-    python3 -c "from huggingface_hub import hf_hub_download; hf_hub_download('Kokoro/Kokoro-FastAPI', 'Kokoro-82M/kokoro-v0_19.onnx', local_dir='/app/Kokoro-82M', local_dir_use_symlinks=False)" \
-    ; fi
+ENV HF_TOKEN=$HF_TOKEN
+RUN python3 -c "import os; from huggingface_hub import hf_hub_download; hf_hub_download('Kokoro/Kokoro-FastAPI', 'Kokoro-82M/kokoro-v0_19.onnx', token=os.environ['HF_TOKEN'], local_dir='/app/Kokoro-82M', local_dir_use_symlinks=False)"
 
 # Set proper ownership
 RUN chown -R appuser:appuser /app
