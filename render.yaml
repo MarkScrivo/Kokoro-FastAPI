@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: kokoro-fastapi
+    env: docker
+    region: oregon
+    plan: standard
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 8880
+      - key: PYTHONPATH
+        value: /app:/app/Kokoro-82M
+    buildCommand: docker build --build-arg HF_TOKEN=$HF_TOKEN -f Dockerfile.cpu -t kokoro-fastapi .
+    dockerfilePath: ./Dockerfile.cpu
+    numInstances: 1
