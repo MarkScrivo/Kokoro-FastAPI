@@ -34,9 +34,10 @@ RUN mkdir -p /app/Kokoro-82M
 
 # Download model files using huggingface-cli
 ARG HF_TOKEN
+ENV HUGGING_FACE_HUB_TOKEN=$HF_TOKEN
 RUN if [ -n "$HF_TOKEN" ]; then \
-    huggingface-cli download --token $HF_TOKEN Kokoro/Kokoro-FastAPI Kokoro-82M/kokoro-v0_19.onnx --local-dir /app/Kokoro-82M; \
-    fi
+    python3 -c "from huggingface_hub import hf_hub_download; hf_hub_download('Kokoro/Kokoro-FastAPI', 'Kokoro-82M/kokoro-v0_19.onnx', local_dir='/app/Kokoro-82M', local_dir_use_symlinks=False)" \
+    ; fi
 
 # Set proper ownership
 RUN chown -R appuser:appuser /app
