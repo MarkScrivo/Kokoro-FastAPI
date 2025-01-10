@@ -10,7 +10,5 @@ services:
         value: 8880
       - key: PYTHONPATH
         value: /app:/app/Kokoro-82M
-      - key: HF_TOKEN
-        sync: false
     dockerfilePath: ./Dockerfile.cpu
     numInstances: 1
